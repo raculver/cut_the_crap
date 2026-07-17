@@ -7,10 +7,10 @@ Pi5
 - monitoring / Yolo surveillance loop
 - monitoring / Recording saving
 - interface / Configuration server
-- comms / BLE Tx
+- comms_tx / BLE Tx
 
 XIAO ESP 32C6
-- comms / BLE Rx
+- comms_rx / BLE Rx
 
 Relay
 - packaging / Mosfet circut

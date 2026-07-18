@@ -1,0 +1,13 @@
+ultralytics
+
+numpy
+opencv-python
+pillow
+matplotlib
+tqdm
+
+picamera2; platform_machine =="aarch64"
+
+
+
+

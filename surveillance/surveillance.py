@@ -1,8 +1,11 @@
 from picamera2 import Picamera2
 from ultralytics import YOLO
 import cv2
-#from tqdm import tqdm
-#import psutil
+from time import time, sleep
+
+from comms.ctc_client import ClientInterface
+
+cooldown_time = 1.5 # seconds
 
 fac = 1 ## resolution factor
 
@@ -23,6 +26,10 @@ picam2.configure(
     )
 )
 picam2.start()
+
+ble_interface = ClientInterface()
+ble_interface.start()
+time_last = 0
 
 while True:
     # Grab a frame
@@ -47,11 +54,18 @@ while True:
     if any([(result.boxes.cls == c).any() for c in target_classes]):
         print("target class detected")
         target_imgs.append(annotated.copy())
+        time_this = time()
+        if time_this > (time_last + cooldown_time):
+            ble_interface.write_ble(True)
+            time_last = time_this
+        
     
     # Press q to quit
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
+        
+    sleep(0.1)
 
-
+ble_interface.stop()
 picam2.stop()
 cv2.destroyAllWindows()
